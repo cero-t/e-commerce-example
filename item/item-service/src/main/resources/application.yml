@@ -1,0 +1,22 @@
+spring:
+  application.name: item-service
+  jpa:
+    database-platform: H2
+    hibernate.ddl-auto: validate
+    show-sql: true
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 9001
+  tomcat:
+    accesslog:
+      enabled: true
+      directory: c:/logs
+      pattern: '%h %l %u %t "%r" %s %b %q'
+
