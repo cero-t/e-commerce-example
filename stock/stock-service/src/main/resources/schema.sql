@@ -1,5 +1,5 @@
 CREATE TABLE stock
 (
   item_id BIGINT NOT NULL PRIMARY KEY,
-  amount INTEGER
+  quantity INTEGER
 );

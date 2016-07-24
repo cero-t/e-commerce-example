@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import ninja.cero.ecommerce.cart.domain.Cart;
 import ninja.cero.ecommerce.cart.domain.CartEvent;
 import ninja.cero.ecommerce.item.domain.Item;
+import ninja.cero.ecommerce.stock.domain.Stock;
 import ninja.cero.ecommerce.store.UserContext;
 
 @RestController
@@ -24,6 +25,7 @@ import ninja.cero.ecommerce.store.UserContext;
 public class CartController {
 	private static final String CART_URL = "http://cart-service";
 	private static final String ITEM_URL = "http://item-service";
+	private static final String STOCK_URL = "http://stock-service";
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -74,7 +76,10 @@ public class CartController {
 			userContext.cartId = cart.cartId;
 		}
 
-		// TODO: stock-service
+		Stock stock = restTemplate.getForObject(STOCK_URL + "/" + cartEvent.itemId, Stock.class);
+		if (stock.quantity < cartEvent.quantity) {
+			throw new RuntimeException("Not enough stock!");
+		}
 
 		Cart cart = restTemplate.postForObject(CART_URL + "/" + userContext.cartId, cartEvent, Cart.class);
 		return cart;
@@ -85,8 +90,6 @@ public class CartController {
 		if (userContext.cartId == null) {
 			return null;
 		}
-
-		// TODO: stock-service
 
 		restTemplate.delete(CART_URL + "/" + userContext.cartId + "/items/" + itemId);
 		return restTemplate.getForObject(CART_URL + "/" + userContext.cartId, Cart.class);
