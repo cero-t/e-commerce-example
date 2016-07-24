@@ -13,3 +13,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 server.port: 9003
+
+logging.level:
+  com.netflix.eureka: error

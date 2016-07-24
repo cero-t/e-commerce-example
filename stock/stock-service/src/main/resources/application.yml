@@ -15,3 +15,6 @@ eureka:
 
 server:
   port: 9002
+
+logging.level:
+  com.netflix.eureka: error

@@ -15,9 +15,6 @@ eureka:
 
 server:
   port: 9001
-  tomcat:
-    accesslog:
-      enabled: true
-      directory: c:/logs
-      pattern: '%h %l %u %t "%r" %s %b %q'
 
+logging.level:
+  com.netflix.eureka: error

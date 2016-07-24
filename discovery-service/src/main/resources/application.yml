@@ -5,3 +5,6 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
+
+logging.level:
+  com.netflix.eureka: error
