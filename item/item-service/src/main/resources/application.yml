@@ -1,5 +1,6 @@
 spring:
   application.name: item-service
+  sleuth.sampler.percentage: 1
   jpa:
     database-platform: H2
     hibernate.ddl-auto: validate
