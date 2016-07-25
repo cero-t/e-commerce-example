@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import ninja.cero.ecommerce.cart.domain.Cart;
 import ninja.cero.ecommerce.cart.domain.CartEvent;
 import ninja.cero.ecommerce.item.domain.Item;
+import ninja.cero.ecommerce.payment.domain.Payment;
 import ninja.cero.ecommerce.stock.domain.Stock;
 import ninja.cero.ecommerce.store.UserContext;
 
@@ -26,6 +27,7 @@ public class CartController {
 	private static final String CART_URL = "http://cart-service";
 	private static final String ITEM_URL = "http://item-service";
 	private static final String STOCK_URL = "http://stock-service";
+	private static final String PAYMENT_URL = "http://payment-service";
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -65,7 +67,7 @@ public class CartController {
 			cartItem.quantity = i.getValue();
 			return cartItem;
 		}).collect(Collectors.toList());
-		
+
 		return cartItems;
 	}
 
@@ -93,5 +95,31 @@ public class CartController {
 
 		restTemplate.delete(CART_URL + "/" + userContext.cartId + "/items/" + itemId);
 		return restTemplate.getForObject(CART_URL + "/" + userContext.cartId, Cart.class);
+	}
+
+	@RequestMapping(value = "/checkout", method = RequestMethod.POST)
+	public void checkout(@RequestBody Payment payment) {
+		// Get cart
+		if (userContext.cartId == null) {
+			throw new RuntimeException("No valid cart!");
+		}
+		Cart cart = restTemplate.getForObject(CART_URL + "/" + userContext.cartId, Cart.class);
+
+		// Keep stock
+		List<Stock> keepRequests = cart.items.entrySet().stream().map(e -> {
+			Stock stock = new Stock();
+			stock.itemId = e.getKey();
+			stock.quantity = e.getValue();
+			return stock;
+		}).collect(Collectors.toList());
+		restTemplate.postForObject(STOCK_URL, keepRequests, Void.class);
+
+		// Card check
+		restTemplate.postForObject(PAYMENT_URL + "/check", payment, Void.class);
+
+		// Order
+		// Payment
+
+		userContext.cartId = null;
 	}
 }

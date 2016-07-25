@@ -30,6 +30,9 @@
 		<module>stock/stock-domain</module>
 		<module>stock/stock-service</module>
 
+		<module>payment/payment-domain</module>
+		<module>payment/payment-service</module>
+
 	<!--
 		<module>order-service</module>
 	-->

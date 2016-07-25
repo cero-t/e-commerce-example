@@ -7,4 +7,5 @@
 .classpath
 .settings
 .gitignore
+.springBeans
 target
