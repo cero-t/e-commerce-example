@@ -1,5 +1,5 @@
 spring:
-  application.name: payment-service
+  application.name: order-service
   sleuth.sampler.percentage: 1
   jpa:
     database-platform: H2
@@ -12,7 +12,7 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 
-server.port: 9005
+server.port: 9004
 
 logging.level:
   com.netflix.eureka: error
