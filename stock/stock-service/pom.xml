@@ -13,6 +13,7 @@
 		<groupId>ninja.cero.ecommerce</groupId>
 		<artifactId>e-commerce-example</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../../</relativePath>
 	</parent>
 
 	<dependencies>

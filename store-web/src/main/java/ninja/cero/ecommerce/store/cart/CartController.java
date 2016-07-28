@@ -3,6 +3,8 @@ package ninja.cero.ecommerce.store.cart;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +48,10 @@ public class CartController {
 			userContext.cartId = cart.cartId;
 		}
 
-		Stock stock = restTemplate.getForObject(STOCK_URL + "/" + cartEvent.itemId, Stock.class);
+		ParameterizedTypeReference<List<Stock>> stocksType = new ParameterizedTypeReference<List<Stock>>() {
+		};
+		Stock stock = restTemplate.exchange(STOCK_URL + "/" + cartEvent.itemId, HttpMethod.GET, null, stocksType)
+				.getBody().get(0);
 		if (stock.quantity < cartEvent.quantity) {
 			throw new RuntimeException("Not enough stock!");
 		}

@@ -13,12 +13,13 @@
 		<groupId>ninja.cero.ecommerce</groupId>
 		<artifactId>e-commerce-example</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../../</relativePath>
 	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-commons</artifactId>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
 	</dependencies>
 

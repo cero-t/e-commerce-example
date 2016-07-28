@@ -13,6 +13,7 @@
 		<groupId>ninja.cero.ecommerce</groupId>
 		<artifactId>e-commerce-example</artifactId>
 		<version>1.0.0</version>
+		<relativePath>../../</relativePath>
 	</parent>
 
 	<dependencies>
@@ -63,10 +64,6 @@
 		<dependency>
 			<groupId>de.flapdoodle.embed</groupId>
 			<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
 		</dependency>
 	</dependencies>
 

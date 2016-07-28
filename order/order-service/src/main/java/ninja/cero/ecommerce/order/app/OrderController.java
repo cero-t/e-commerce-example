@@ -13,7 +13,7 @@ public class OrderController {
 	@Autowired
 	OrderRepository orderRepository;
 
-	@RequestMapping(value = "/check", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	public Long createOrder(@RequestBody Order order) {
 		orderRepository.save(order);
 		return order.id;

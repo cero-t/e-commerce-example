@@ -16,3 +16,4 @@ server.port: 9003
 
 logging.level:
   com.netflix.eureka: error
+  com.netflix.discovery: error

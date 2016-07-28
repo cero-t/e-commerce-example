@@ -18,3 +18,4 @@ server:
 
 logging.level:
   com.netflix.eureka: error
+  com.netflix.discovery: error
