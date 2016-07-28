@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import ninja.cero.ecommerce.cart.domain.Cart;
+import ninja.cero.ecommerce.cart.domain.CartDetail;
 import ninja.cero.ecommerce.cart.domain.CartEvent;
 import ninja.cero.ecommerce.stock.domain.Stock;
 import ninja.cero.ecommerce.store.UserContext;
@@ -29,16 +30,15 @@ public class CartController {
 	@Autowired
 	UserContext userContext;
 
-	@Autowired
-	CartLogic cartLogic;
-
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<CartItem> findCart() {
+	public CartDetail findCart() {
 		// Get cart
 		if (userContext.cartId == null) {
 			return null;
 		}
-		return cartLogic.findCart(userContext.cartId);
+		CartDetail cart = restTemplate.getForObject(CART_URL + "/" + userContext.cartId + "/detail", CartDetail.class);
+
+		return cart;
 	}
 
 	@RequestMapping(value = "/items", method = RequestMethod.POST)

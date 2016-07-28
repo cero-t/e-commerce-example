@@ -3,7 +3,7 @@ spring:
   sleuth.sampler.percentage: 1
   jpa:
     database-platform: H2
-#    hibernate.ddl-auto: validate
+    hibernate.ddl-auto: validate
     show-sql: true
 
 eureka:
