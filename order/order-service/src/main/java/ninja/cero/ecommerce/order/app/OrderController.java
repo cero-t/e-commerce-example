@@ -3,8 +3,8 @@ package ninja.cero.ecommerce.order.app;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,8 +34,8 @@ public class OrderController {
 	OrderEventRepository orderEventRepository;
 
 	@Autowired
-	RabbitTemplate rabbitTemplate;
-
+	OrderSource orderSource;
+	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void createOrder(@RequestBody Order order) {
 		orderRepository.save(order);
@@ -63,9 +63,10 @@ public class OrderController {
 		OrderEvent event = new OrderEvent();
 		event.orderId = order.id;
 		event.eventType = EventType.START;
+		orderEventRepository.save(event);
 
 		// Order
-		rabbitTemplate.convertAndSend("ec-order", order.id);
+		orderSource.order().send(MessageBuilder.withPayload(order).build());
 
 		// Payment
 
@@ -76,5 +77,11 @@ public class OrderController {
 	@RequestMapping(value = "/{orderId}/event", method = RequestMethod.POST)
 	public void createEvent(@RequestBody OrderEvent orderEvent) {
 		orderEventRepository.save(orderEvent);
+	}
+
+	@RequestMapping(value = "/events", method = RequestMethod.GET)
+	public Iterable<OrderEvent> getEvents() {
+		return orderEventRepository.findAll();
+
 	}
 }
