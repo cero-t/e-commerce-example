@@ -3,6 +3,7 @@ package ninja.cero.ecommerce.order.app;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import ninja.cero.ecommerce.cart.domain.CartDetail;
+import ninja.cero.ecommerce.order.domain.EventType;
 import ninja.cero.ecommerce.order.domain.Order;
+import ninja.cero.ecommerce.order.domain.OrderEvent;
 import ninja.cero.ecommerce.payment.domain.Payment;
 import ninja.cero.ecommerce.stock.domain.Stock;
 
@@ -26,6 +29,12 @@ public class OrderController {
 
 	@Autowired
 	OrderRepository orderRepository;
+
+	@Autowired
+	OrderEventRepository orderEventRepository;
+
+	@Autowired
+	RabbitTemplate rabbitTemplate;
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void createOrder(@RequestBody Order order) {
@@ -50,11 +59,22 @@ public class OrderController {
 		payment.amount = cart.amount;
 		restTemplate.postForObject(PAYMENT_URL + "/check", payment, Void.class);
 
+		// Start orderEvent
+		OrderEvent event = new OrderEvent();
+		event.orderId = order.id;
+		event.eventType = EventType.START;
+
 		// Order
+		rabbitTemplate.convertAndSend("ec-order", order.id);
 
 		// Payment
 
 		// SendMail
 
+	}
+
+	@RequestMapping(value = "/{orderId}/event", method = RequestMethod.POST)
+	public void createEvent(@RequestBody OrderEvent orderEvent) {
+		orderEventRepository.save(orderEvent);
 	}
 }

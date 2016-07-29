@@ -1,5 +1,6 @@
 package ninja.cero.ecommerce.payment.app;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,11 @@ import ninja.cero.ecommerce.payment.domain.Payment;
 public class PaymentController {
 	@Autowired
 	PaymentRepository paymentRepository;
+
+	@RabbitListener(queues = { "ec-order" })
+	public void hoge() {
+		System.out.println("HOGE");
+	}
 
 	@RequestMapping(value = "/check", method = RequestMethod.POST)
 	public void check(@RequestBody Payment payment) {

@@ -10,3 +10,11 @@ CREATE TABLE "order"
   card_name VARCHAR(256),
   cart_id VARCHAR(32)
 );
+
+CREATE TABLE order_event
+(
+  id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  order_id BIGINT,
+  event_type INTEGER,
+  event_time TIMESTAMP
+);
