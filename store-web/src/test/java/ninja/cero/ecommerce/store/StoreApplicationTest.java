@@ -4,13 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 public class StoreApplicationTest {
-	RestTemplate restTemplate = new RestTemplate();
-
 	@Test
 	public void test1() {
+		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+
 		System.out.println("show catalog");
 		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
 
@@ -32,5 +33,40 @@ public class StoreApplicationTest {
 		map.put("cardExpire", "12/20");
 		map.put("cardName", "Shin Tanimoto");
 		System.out.println(restTemplate.postForObject("http://localhost:8080/order", map, Object.class));
+	}
+
+	@Test
+	public void test2() {
+		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+
+		System.out.println("show catalog");
+		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
+		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
+	}
+
+	@Test
+	public void test3() {
+		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+
+		System.out.println("show catalog");
+		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
+		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
+		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
+		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
+
+		System.out.println("add cart");
+		Map<String, Object> cartItem = new HashMap<>();
+		cartItem.put("itemId", 2);
+		cartItem.put("quantity", 1);
+		System.out.println(restTemplate.postForObject("http://localhost:8080/cart/items", cartItem, Object.class));
+}
+
+	@Test
+	public void test4() {
+		RestTemplate restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+
+		System.out.println("show catalog");
+		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
+		System.out.println(restTemplate.getForObject("http://localhost:8080/catalog", Object.class));
 	}
 }

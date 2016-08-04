@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -25,7 +27,10 @@ public class CatalogController {
 	RestTemplate restTemplate;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<CatalogItem> findCatalog() {
+	public List<CatalogItem> findCatalog(HttpSession session) {
+		// Force create session
+		session.getId();
+		
 		// Get items
 		ParameterizedTypeReference<List<Item>> itemsType = new ParameterizedTypeReference<List<Item>>() {
 		};

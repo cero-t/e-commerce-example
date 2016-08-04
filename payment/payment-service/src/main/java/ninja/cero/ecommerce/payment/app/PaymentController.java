@@ -16,8 +16,8 @@ public class PaymentController {
 	PaymentRepository paymentRepository;
 
 	@StreamListener("order")
-	public void hoge(Order order) {
-		System.out.println("HOGE");
+	public void hoge(Order order) throws InterruptedException {
+		Thread.sleep(1000L);
 	}
 
 	@RequestMapping(value = "/check", method = RequestMethod.POST)
